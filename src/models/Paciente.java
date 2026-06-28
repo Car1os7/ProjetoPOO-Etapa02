@@ -1,63 +1,58 @@
-public class Paciente {
-    public String nome;
-    public String cpf;
-    public int idade;
-    public String telefone;
-    public String convenioNome;
-    public boolean ativo;
+// ARQUIVO: src/models/Paciente.java
+package models;
 
+/**
+ * CLASSE PACIENTE - Especializacao de Pessoa
+ * 
+ * Conceitos aplicados:
+ * - HERANCA: extends Pessoa (Paciente e uma Pessoa)
+ * - ENCAPSULAMENTO: atributos privados
+ * - SOBRECARGA: construtores sobrecarregados
+ */
+public class Paciente extends Pessoa {
+    
+    // ATRIBUTOS ESPECIFICOS DE PACIENTE
+    private int idade;
+    private String convenioNome;
+    private boolean ativo;
+    private Convenio convenio; // ASSOCIACAO: paciente pode ter um convenio
+    
+    //  CONSTRUTORES SOBRECARREGADOS 
+    // SOBRECARGA: diferentes formas de criar um paciente
+    
+    // Cadastro minimo
     public Paciente(String nome, String cpf) {
-        this.nome = nome;
-        this.cpf = cpf;
+        super(nome, cpf); // CHAMADA AO CONSTRUTOR DA SUPERCLASSE
         this.idade = 0;
-        this.telefone = "";
         this.convenioNome = "";
         this.ativo = true;
+        this.convenio = null;
     }
-
+    
+    // Com idade e telefone
     public Paciente(String nome, String cpf, int idade, String telefone) {
-        this.nome = nome;
-        this.cpf = cpf;
+        super(nome, cpf, telefone); // CHAMADA AO CONSTRUTOR DA SUPERCLASSE
         this.idade = idade;
-        this.telefone = telefone;
         this.convenioNome = "";
         this.ativo = true;
+        this.convenio = null;
     }
-
-    // construtor com todos os dados
+    
+    // Cadastro completo com nome do convenio
     public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
-        this.nome = nome;
-        this.cpf = cpf;
+        super(nome, cpf, telefone); // CHAMADA AO CONSTRUTOR DA SUPERCLASSE
         this.idade = idade;
-        this.telefone = telefone;
         this.convenioNome = convenioNome;
         this.ativo = true;
+        this.convenio = null;
     }
-
-    // atualiza so idade e telefone
-    public void complementar(int idade, String telefone) {
+    
+    // Cadastro completo com objeto Convenio
+    public Paciente(String nome, String cpf, int idade, String telefone, Convenio convenio) {
+        super(nome, cpf, telefone); // CHAMADA AO CONSTRUTOR DA SUPERCLASSE
         this.idade = idade;
-        this.telefone = telefone;
-    }
-
-    // atualiza tudo incluindo convenio
-    public void complementar(int idade, String telefone, String convenioNome) {
-        this.idade = idade;
-        this.telefone = telefone;
-        this.convenioNome = convenioNome;
-    }
-
-    public void desativar() {
-        this.ativo = false;
-    }
-
-    public String exibirResumo() {
-        String status = "Sim";
-        if (!ativo) {
-            status = "Nao";
-        }
-        return "Nome: " + nome + " | CPF: " + cpf + " | Idade: " + idade
-                + " | Tel: " + telefone + " | Convenio: " + convenioNome
-                + " | Ativo: " + status;
+        this.convenio = convenio;
+        this.convenioNome = (convenio != null) ? convenio.getNome() : "";
+        this.ativo = true;
     }
 }
