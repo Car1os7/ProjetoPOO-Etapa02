@@ -1,4 +1,22 @@
 import java.util.Scanner;
+import models.Pessoa;
+import models.Paciente;
+import models.Profissional;
+import models.Consulta;
+import models.Atendimento;
+import models.Pagamento;
+import models.Convenio;
+import models.HorarioDisponivel;
+import models.Fisioterapeuta;
+import models.Psicologo;
+import models.Nutricionista;
+import models.ClinicoGeral;
+import models.Prontuario;
+import models.Agendavel;
+import models.Exportavel;
+import models.PagamentoDinheiro;
+import models.PagamentoCartao;
+import models.PagamentoConvenio;
 
 public class Main {
     static Paciente[] pacientes = new Paciente[100];
