@@ -101,4 +101,20 @@ public abstract class Pessoa {
         }
         this.dataNascimento = dataNascimento;
     }
+    
+    //  METODO ABSTRATO 
+    // METODO ABSTRATO: obriga subclasses a implementarem
+    // LIGACAO DINAMICA: sera resolvido em tempo de execucao baseado no tipo real do objeto
+    public abstract String exibirResumo();
+    
+    //  METODO CONCRETO 
+    // Metodo comum a todas as pessoas
+    public String getDadosBasicos() {
+        return "Nome: " + nome + " | CPF: " + cpf;
+    }
+    
+    @Override
+    public String toString() {
+        return exibirResumo();
+    }
 }
