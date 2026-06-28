@@ -1,84 +1,54 @@
-public class Profissional {
-    public String nome;
-    public String especialidade;
-    public String registroProfissional;
-    public double valorConsulta;
-    public String[] diasDisponiveis;
-    public int totalDias;
+// ARQUIVO: src/models/Profissional.java
+package models;
 
-    // so nome e especialidade
-    public Profissional(String nome, String especialidade) {
-        this.nome = nome;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * CLASSE ABSTRATA PROFISSIONAL - Especializacao de Pessoa
+ * 
+ * Conceitos aplicados:
+ * - HERANCA: extends Pessoa (Profissional e uma Pessoa)
+ * - CLASSE ABSTRATA: nao pode ser instanciada
+ * - ENCAPSULAMENTO: atributos privados
+ * - SOBRECARGA: construtores sobrecarregados
+ */
+public abstract class Profissional extends Pessoa {
+    
+    // ATRIBUTOS
+    private String especialidade;
+    private String registroProfissional;
+    private double valorConsulta;
+    private List<HorarioDisponivel> horarios; // AGREGACAO: horarios existem independentemente
+    
+    // ========== CONSTRUTORES SOBRECARREGADOS ==========
+    // SOBRECARGA: diferentes formas de criar um profissional
+    
+    // Cadastro minimo
+    public Profissional(String nome, String cpf, String especialidade) {
+        super(nome, cpf);
         this.especialidade = especialidade;
         this.registroProfissional = "";
-        this.valorConsulta = 0;
-        this.diasDisponiveis = new String[7];
-        this.totalDias = 0;
+        this.valorConsulta = 0.0;
+        this.horarios = new ArrayList<>();
     }
-
-    public Profissional(String nome, String especialidade, String registroProfissional, double valorConsulta) {
-        this.nome = nome;
+    
+    // Com registro e valor
+    public Profissional(String nome, String cpf, String especialidade, String registroProfissional, double valorConsulta) {
+        super(nome, cpf);
         this.especialidade = especialidade;
         this.registroProfissional = registroProfissional;
         this.valorConsulta = valorConsulta;
-        this.diasDisponiveis = new String[7];
-        this.totalDias = 0;
+        this.horarios = new ArrayList<>();
     }
-
-    // construtor completo com dias
-    public Profissional(String nome, String especialidade, String registroProfissional,
-                        double valorConsulta, String[] dias, int totalDias) {
-        this.nome = nome;
+    
+    // Completo com horarios
+    public Profissional(String nome, String cpf, String especialidade, String registroProfissional, 
+                        double valorConsulta, List<HorarioDisponivel> horarios) {
+        super(nome, cpf);
         this.especialidade = especialidade;
         this.registroProfissional = registroProfissional;
         this.valorConsulta = valorConsulta;
-        this.diasDisponiveis = new String[7];
-        this.totalDias = totalDias;
-        for (int i = 0; i < totalDias; i++) {
-            this.diasDisponiveis[i] = dias[i];
-        }
-    }
-
-    public void atualizar(String registro, double valor) {
-        this.registroProfissional = registro;
-        this.valorConsulta = valor;
-    }
-
-    public void atualizar(String registro, double valor, String[] dias, int totalDias) {
-        this.registroProfissional = registro;
-        this.valorConsulta = valor;
-        this.totalDias = totalDias;
-        for (int i = 0; i < totalDias; i++) {
-            this.diasDisponiveis[i] = dias[i];
-        }
-    }
-
-    // verifica se o profissional atende naquele dia
-    public boolean atendeNoDia(String dia) {
-        for (int i = 0; i < totalDias; i++) {
-            if (diasDisponiveis[i].equals(dia)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // valida as especialidades aceitas pela clinica
-    public static boolean especialidadeValida(String esp) {
-        if (esp.equals("clinica geral")) return true;
-        if (esp.equals("fisioterapia")) return true;
-        if (esp.equals("psicologia")) return true;
-        if (esp.equals("nutricao")) return true;
-        return false;
-    }
-
-    public String exibirResumo() {
-        String dias = "";
-        for (int i = 0; i < totalDias; i++) {
-            if (i > 0) dias = dias + ", ";
-            dias = dias + diasDisponiveis[i];
-        }
-        return "Nome: " + nome + " | Espec: " + especialidade + " | Reg: " + registroProfissional
-                + " | Valor: R$" + valorConsulta + " | Dias: " + dias;
+        this.horarios = (horarios != null) ? horarios : new ArrayList<>();
     }
 }
