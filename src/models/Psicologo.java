@@ -34,3 +34,19 @@ public class Psicologo extends Profissional {
         }
         this.abordagem = abordagem;
     }
+ // ========== SOBRESCRITA DE MÉTODOS ==========
+    
+    @Override
+    public String exibirResumo() {
+        return super.exibirResumo() + 
+               " | Abordagem: " + abordagem + 
+               " [PSICOLOGO]";
+    }
+    
+    @Override
+    public String registrarEspecifico(Atendimento atendimento) {
+        String info = "PSICOLOGIA: Abordagem = " + abordagem;
+        atendimento.adicionarInfoEspecialidade(info);
+        return "Registro psicológico com abordagem " + abordagem + ".";
+    }
+}
