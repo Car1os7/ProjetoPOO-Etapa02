@@ -6,9 +6,10 @@ package models;
  * 
  * Conceitos aplicados:
  * - HERANCA: extends Pessoa (Paciente e uma Pessoa)
+ * - SOBRESCRITA: @Override do metodo exibirResumo()
+ * - ASSOCIACAO: Paciente conhece Convenio (ambos existem independentemente)
  * - ENCAPSULAMENTO: atributos privados com validacao
- * - SOBRECARGA: construtores sobrecarregados
- * - ASSOCIACAO: Paciente conhece Convenio
+ * - SOBRECARGA: construtores e metodos sobrecarregados
  */
 public class Paciente extends Pessoa {
     
@@ -18,7 +19,7 @@ public class Paciente extends Pessoa {
     private boolean ativo;
     private Convenio convenio; // ASSOCIACAO: paciente pode ter um convenio
     
-    // CONSTRUTORES SOBRECARREGADOS 
+    //  CONSTRUTORES SOBRECARREGADOS 
     // SOBRECARGA: diferentes formas de criar um paciente
     
     public Paciente(String nome, String cpf) {
@@ -31,7 +32,7 @@ public class Paciente extends Pessoa {
     
     public Paciente(String nome, String cpf, int idade, String telefone) {
         super(nome, cpf, telefone);
-        setIdade(idade); // USANDO SETTER COM VALIDACAO
+        setIdade(idade);
         this.convenioNome = "";
         this.ativo = true;
         this.convenio = null;
@@ -39,7 +40,7 @@ public class Paciente extends Pessoa {
     
     public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
         super(nome, cpf, telefone);
-        setIdade(idade); // USANDO SETTER COM VALIDACAO
+        setIdade(idade);
         this.convenioNome = convenioNome;
         this.ativo = true;
         this.convenio = null;
@@ -47,13 +48,13 @@ public class Paciente extends Pessoa {
     
     public Paciente(String nome, String cpf, int idade, String telefone, Convenio convenio) {
         super(nome, cpf, telefone);
-        setIdade(idade); // USANDO SETTER COM VALIDACAO
+        setIdade(idade);
         this.convenio = convenio;
         this.convenioNome = (convenio != null) ? convenio.getNome() : "";
         this.ativo = true;
     }
     
-    //  GETTERS E SETTERS 
+    //  GETTERS E SETTERS ==========
     // ENCAPSULAMENTO: acesso controlado aos atributos
     
     public int getIdade() {
@@ -94,5 +95,44 @@ public class Paciente extends Pessoa {
     public void setConvenio(Convenio convenio) {
         this.convenio = convenio;
         this.convenioNome = (convenio != null) ? convenio.getNome() : "";
+    }
+    
+    //  METODOS ESPECIFICOS 
+    
+    public void desativar() {
+        this.ativo = false;
+    }
+    
+    public void ativar() {
+        this.ativo = true;
+    }
+    
+    //  METODOS SOBRECARREGADOS 
+    // SOBRECARGA: mesmo nome, parametros diferentes
+    
+    public void complementar(int idade, String telefone) {
+        setIdade(idade);
+        setTelefone(telefone);
+    }
+    
+    public void complementar(int idade, String telefone, String convenioNome) {
+        setIdade(idade);
+        setTelefone(telefone);
+        this.convenioNome = convenioNome;
+    }
+    
+    //  SOBRESCRITA 
+    // SOBRESCRITA: redefinindo comportamento da superclasse
+    // LIGACAO DINAMICA: o metodo executado depende do tipo real do objeto
+    
+    @Override
+    public String exibirResumo() {
+        String status = ativo ? "ATIVO" : "INATIVO";
+        String conv = (convenio != null) ? convenio.getNome() : convenioNome;
+        if (conv == null || conv.isEmpty()) conv = "Nenhum";
+        
+        return "PACIENTE: " + getNome() + " | CPF: " + getCpf() + 
+               " | Idade: " + idade + " | Telefone: " + getTelefone() +
+               " | Convenio: " + conv + " | Status: " + status;
     }
 }
