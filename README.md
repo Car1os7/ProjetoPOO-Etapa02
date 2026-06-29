@@ -4,7 +4,7 @@
 
 O **Sistema de Gestão da Clínica VidaPlena** é uma aplicação Java para gerenciamento de clínica multidisciplinar, desenvolvida como projeto final da disciplina de Programação Orientada a Objetos.
 
-O sistema foi desenvolvido seguindo os princípios da **Programação Orientada a Objetos**, aplicando conceitos como **abstração, encapsulamento, herança, polimorfismo, interfaces, exceções personalizadas e coleções**.
+O sistema foi desenvolvido seguindo os princípios da **Programação Orientada a Objetos**, aplicando conceitos como **abstração, encapsulamento, herança, polimorfismo, exceções personalizadas e coleções**.
 
 ---
 
@@ -25,3 +25,5 @@ javac -d . src/*.java
 
 # Ou compile separadamente (se houver erros)
 javac -d . src/Main.java
+
+![Diagrama de Classes](images/DiagramaDoProjeto.png)
