@@ -145,3 +145,121 @@ public class Main {
             System.err.println("Erro ao carregar dados: " + e.getMessage());
         }
     }
+
+    // ========== MENU PACIENTES ==========
+    
+    private static void menuPacientes() {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n--- PACIENTES ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Complementar cadastro");
+            System.out.println("3 - Buscar por CPF");
+            System.out.println("4 - Listar todos");
+            System.out.println("5 - Desativar");
+            System.out.println("0 - Voltar");
+            System.out.print("Opcao: ");
+            op = lerInteiro();
+            switch (op) {
+                case 1: cadastrarPaciente(); break;
+                case 2: complementarPaciente(); break;
+                case 3: buscarPaciente(); break;
+                case 4: listarPacientes(); break;
+                case 5: desativarPaciente(); break;
+                case 0: break;
+                default: System.out.println("Opcao invalida!"); break;
+            }
+        }
+    }
+
+    private static void cadastrarPaciente() {
+        try {
+            System.out.println("\n--- CADASTRO DE PACIENTE ---");
+            System.out.print("Nome: ");
+            String nome = lerStringNaoVazia();
+            System.out.print("CPF (11 digitos): ");
+            String cpf = lerStringNaoVazia();
+            
+            if (cpfsCadastrados.contains(cpf)) {
+                System.out.println("CPF ja cadastrado!");
+                return;
+            }
+            
+            System.out.print("Idade: ");
+            int idade = lerInteiro();
+            System.out.print("Telefone: ");
+            String telefone = lerString();
+            System.out.print("Convenio (ou 'Nenhum'): ");
+            String convenioNome = lerString();
+            
+            Paciente p;
+            if (convenioNome.equalsIgnoreCase("Nenhum") || convenioNome.isEmpty()) {
+                p = new Paciente(nome, cpf, idade, telefone);
+            } else {
+                p = new Paciente(nome, cpf, idade, telefone, convenioNome);
+            }
+            
+            pacientes.add(p);
+            cpfsCadastrados.add(cpf);
+            mapaPacientes.put(cpf, p);
+            System.out.println("Paciente cadastrado com sucesso!");
+            
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void complementarPaciente() {
+        try {
+            System.out.print("CPF: ");
+            String cpf = lerString();
+            Paciente p = mapaPacientes.get(cpf);
+            if (p == null) {
+                System.out.println("Paciente nao encontrado!");
+                return;
+            }
+            System.out.print("Nova idade: ");
+            int idade = lerInteiro();
+            System.out.print("Novo telefone: ");
+            String telefone = lerString();
+            p.complementar(idade, telefone);
+            System.out.println("Cadastro complementado!");
+            
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void buscarPaciente() {
+        System.out.print("CPF: ");
+        String cpf = lerString();
+        Paciente p = mapaPacientes.get(cpf);
+        if (p == null) {
+            System.out.println("Paciente nao encontrado!");
+        } else {
+            System.out.println(p.exibirResumo());
+        }
+    }
+
+    private static void listarPacientes() {
+        if (pacientes.isEmpty()) {
+            System.out.println("Nenhum paciente cadastrado.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE PACIENTES ===");
+        for (Paciente p : pacientes) {
+            System.out.println(p.exibirResumo());
+        }
+    }
+
+    private static void desativarPaciente() {
+        System.out.print("CPF: ");
+        String cpf = lerString();
+        Paciente p = mapaPacientes.get(cpf);
+        if (p == null) {
+            System.out.println("Paciente nao encontrado!");
+            return;
+        }
+        p.desativar();
+        System.out.println("Paciente desativado!");
+    }
