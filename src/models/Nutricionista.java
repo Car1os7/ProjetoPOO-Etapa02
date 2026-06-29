@@ -1,3 +1,5 @@
+package models;
+
 public class Nutricionista extends Profissional {
     
     private String planoAlimentar;

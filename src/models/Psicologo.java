@@ -1,3 +1,5 @@
+package models;
+
 public class Psicologo extends Profissional {
     
     // ATRIBUTO ESPECÍFICO
