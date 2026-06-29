@@ -10,3 +10,4 @@ public class PacienteNaoEncontradoException extends Exception {
     }
 }
 
+

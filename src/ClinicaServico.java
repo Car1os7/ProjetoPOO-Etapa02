@@ -338,3 +338,4 @@ public class ClinicaServico {
     public Map<String, Paciente> getPacienteMap() { return pacienteMap; }
     public Map<String, Profissional> getProfissionalMap() { return profissionalMap; }
 }
+

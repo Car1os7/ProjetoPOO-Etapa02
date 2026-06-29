@@ -63,3 +63,4 @@ public class Fisioterapeuta extends Profissional {
         return "Registro fisioterapêutico: " + totalSessoesPrevistas + " sessões planejadas.";
     }
 }
+

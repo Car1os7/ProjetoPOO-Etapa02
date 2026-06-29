@@ -22,3 +22,4 @@ public class PacienteInativoException extends Exception {
         super(mensagem, causa);
     }
 }
+

@@ -8,3 +8,4 @@ public class ProfissionalNaoEncontradoException extends Exception {
         super(mensagem, causa);
     }
 }
+

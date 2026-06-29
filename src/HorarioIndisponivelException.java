@@ -9,3 +9,4 @@ public class HorarioIndisponivelException extends Exception {
         super(mensagem, causa);
     }
 }
+

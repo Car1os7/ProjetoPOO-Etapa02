@@ -1,6 +1,6 @@
 
 
-import exception.PagamentoInvalidoException;
+
 
 public abstract class Pagamento {
     
@@ -61,4 +61,5 @@ public abstract class Pagamento {
         return exibirResumo();
     }
 }
+
 

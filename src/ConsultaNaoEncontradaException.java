@@ -9,3 +9,4 @@ public class ConsultaNaoEncontradaException extends Exception {
     }
 }
 
+

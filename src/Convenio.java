@@ -81,3 +81,4 @@ public class Convenio {
                ") - Cobertura: " + String.join(", ", especialidadesCobertas);
     }
 }
+

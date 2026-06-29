@@ -8,3 +8,4 @@ public class PagamentoInvalidoException extends RuntimeException {
         super(mensagem, causa);
     }
 }
+

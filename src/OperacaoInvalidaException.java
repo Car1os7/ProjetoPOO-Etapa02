@@ -8,3 +8,4 @@ public class OperacaoInvalidaException extends RuntimeException {
         super(mensagem, causa);
     }
 }
+

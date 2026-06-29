@@ -8,3 +8,4 @@ public class ConvenioNaoCobreException extends RuntimeException {
         super(mensagem, causa);
     }
 }
+

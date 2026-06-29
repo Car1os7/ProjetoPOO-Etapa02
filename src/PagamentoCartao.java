@@ -1,6 +1,6 @@
 
 
-import exception.PagamentoInvalidoException;
+
 
 public class PagamentoCartao extends Pagamento {
     
@@ -52,4 +52,5 @@ public class PagamentoCartao extends Pagamento {
                " | Valor Final: R$" + String.format("%.2f", calcularValorFinal());
     }
 }
+
 

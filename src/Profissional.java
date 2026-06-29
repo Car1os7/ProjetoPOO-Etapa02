@@ -150,3 +150,4 @@ public abstract class Profissional extends Pessoa {
                esp.equals("nutricao") || esp.equals("nutricionista");
     }
 }
+
