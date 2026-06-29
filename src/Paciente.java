@@ -1,5 +1,5 @@
 // ARQUIVO: src/models/Paciente.java
-package models;
+
 
 /**
  * CLASSE PACIENTE - Especializacao de Pessoa

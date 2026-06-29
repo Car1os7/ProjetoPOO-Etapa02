@@ -1,5 +1,5 @@
 // ARQUIVO: src/exception/PacienteInativoException.java
-package exception;
+
 
 /**
  * EXCEÇÃO PERSONALIZADA

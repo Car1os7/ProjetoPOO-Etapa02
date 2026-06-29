@@ -1,8 +1,7 @@
 // ARQUIVO: src/service/ClinicaServico.java
-package service;
 
-import models.*;
-import exception.*;
+
+
 import java.util.*;
 
 /**

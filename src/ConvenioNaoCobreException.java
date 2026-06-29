@@ -1,4 +1,4 @@
-package exception;
+
 
 public class ConvenioNaoCobreException extends RuntimeException {
     public ConvenioNaoCobreException(String mensagem) {

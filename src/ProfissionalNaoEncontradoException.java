@@ -1,4 +1,4 @@
-package exception;
+
 
 public class ProfissionalNaoEncontradoException extends Exception {
     public ProfissionalNaoEncontradoException(String mensagem) {

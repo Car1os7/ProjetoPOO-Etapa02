@@ -1,5 +1,4 @@
 // ARQUIVO: src/models/Profissional.java
-package models;
 
 import java.util.ArrayList;
 import java.util.List;

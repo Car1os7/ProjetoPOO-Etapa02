@@ -1,5 +1,5 @@
 // ARQUIVO: src/models/Pessoa.java
-package models;
+
 
 /**
  * CLASSE ABSTRATA: Pessoa

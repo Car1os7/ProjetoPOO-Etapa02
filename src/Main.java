@@ -1,10 +1,4 @@
 // ARQUIVO: src/Main.java
-package main;
-
-import models.*;
-import service.ClinicaServico;
-import util.Relatorio;
-import exception.*;
 
 import java.util.*;
 
