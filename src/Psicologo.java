@@ -52,3 +52,4 @@ public class Psicologo extends Profissional {
         return "Registro psicológico com abordagem " + abordagem + ".";
     }
 }
+

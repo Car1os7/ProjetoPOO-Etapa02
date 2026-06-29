@@ -1,5 +1,5 @@
 // ARQUIVO: src/exception/PacienteNaoEncontradoException.java
-package exception;
+
 
 public class PacienteNaoEncontradoException extends Exception {
     public PacienteNaoEncontradoException(String mensagem) {
@@ -9,3 +9,4 @@ public class PacienteNaoEncontradoException extends Exception {
         super(mensagem, causa);
     }
 }
+

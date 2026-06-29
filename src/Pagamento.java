@@ -1,4 +1,4 @@
-package models;
+
 
 import exception.PagamentoInvalidoException;
 
@@ -61,3 +61,4 @@ public abstract class Pagamento {
         return exibirResumo();
     }
 }
+

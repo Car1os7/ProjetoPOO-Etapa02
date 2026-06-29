@@ -49,3 +49,4 @@ public class ClinicoGeral extends Profissional {
         return "Nenhum encaminhamento necessário.";
     }
 }
+

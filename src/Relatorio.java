@@ -2,7 +2,8 @@
 
 
 
-import java.util.*;
+import java.util.List;
+
 
 /**
  * CLASSE RELATORIO

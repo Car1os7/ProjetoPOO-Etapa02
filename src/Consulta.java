@@ -156,3 +156,4 @@ public class Consulta implements Agendavel, Exportavel {
         return exibirResumo();
     }
 }
+

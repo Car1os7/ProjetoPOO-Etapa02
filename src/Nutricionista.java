@@ -50,3 +50,4 @@ public class Nutricionista extends Profissional {
         return "Registro nutricional com plano: " + planoAlimentar;
     }
 }
+

@@ -8,3 +8,4 @@ public class ConsultaNaoEncontradaException extends Exception {
         super(mensagem, causa);
     }
 }
+
