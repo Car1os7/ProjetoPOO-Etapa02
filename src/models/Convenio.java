@@ -3,6 +3,15 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CLASSE CONVENIO
+ * 
+ * Conceitos aplicados:
+ * - ASSOCIAÇÃO: Convenio existe independentemente do Paciente
+ * - ENCAPSULAMENTO: atributos privados
+ * 
+ * O convênio pode ser associado a vários pacientes
+ */
 public class Convenio {
     
     private String nome;
@@ -47,5 +56,28 @@ public class Convenio {
     
     public List<String> getEspecialidadesCobertas() { 
         return new ArrayList<>(especialidadesCobertas); 
+    }
+    
+    // ========== MÉTODOS ==========
+    
+    public void adicionarEspecialidade(String especialidade) {
+        if (especialidade != null && !especialidade.trim().isEmpty()) {
+            this.especialidadesCobertas.add(especialidade.toLowerCase().trim());
+        }
+    }
+    
+    public void removerEspecialidade(String especialidade) {
+        this.especialidadesCobertas.remove(especialidade.toLowerCase().trim());
+    }
+    
+    public boolean cobreEspecialidade(String especialidade) {
+        if (especialidade == null) return false;
+        return especialidadesCobertas.contains(especialidade.toLowerCase().trim());
+    }
+    
+    @Override
+    public String toString() {
+        return nome + " (" + String.format("%.0f%%", percentualCobertura * 100) + 
+               ") - Cobertura: " + String.join(", ", especialidadesCobertas);
     }
 }
