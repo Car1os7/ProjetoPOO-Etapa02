@@ -795,3 +795,87 @@ public class Main {
             System.out.println(p.exibirResumo());
         }
     }
+
+    // ========== MENU RELATORIOS ==========
+    
+    private static void menuRelatorios() {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n--- RELATORIOS ---");
+            System.out.println("1 - Relatorio Unificado");
+            System.out.println("2 - Relatorio de Pagamentos");
+            System.out.println("3 - Relatorio por Profissional");
+            System.out.println("4 - Relatorio por Periodo");
+            System.out.println("5 - Resumo Financeiro");
+            System.out.println("0 - Voltar");
+            System.out.print("Opcao: ");
+            op = lerInteiro();
+            switch (op) {
+                case 1: gerarRelatorioUnificado(); break;
+                case 2: gerarRelatorioPagamentos(); break;
+                case 3: relatorioPorProfissional(); break;
+                case 4: relatorioPorPeriodo(); break;
+                case 5: resumoFinanceiro(); break;
+                case 0: break;
+                default: System.out.println("Opcao invalida!"); break;
+            }
+        }
+    }
+
+    private static void gerarRelatorioUnificado() {
+        System.out.println("\n=== RELATORIO UNIFICADO ===");
+        List<Pessoa> todas = new ArrayList<>();
+        todas.addAll(pacientes);
+        todas.addAll(profissionais);
+        
+        for (Pessoa p : todas) {
+            System.out.println(p.exibirResumo());
+        }
+        System.out.println("Total: " + todas.size() + " pessoas.");
+    }
+
+    private static void gerarRelatorioPagamentos() {
+        System.out.println("\n=== RELATORIO DE PAGAMENTOS ===");
+        double total = 0;
+        for (Pagamento p : pagamentos) {
+            System.out.println(p.exibirResumo());
+            total += p.calcularValorFinal();
+        }
+        System.out.println("Total: R$" + String.format("%.2f", total));
+    }
+
+    private static void relatorioPorProfissional() {
+        System.out.print("Nome do profissional: ");
+        String nome = lerString();
+        boolean achou = false;
+        System.out.println("\n=== CONSULTAS DE " + nome + " ===");
+        for (Consulta c : consultas) {
+            if (c.getNomeProfissional().equalsIgnoreCase(nome)) {
+                System.out.println(c.exibirResumo());
+                achou = true;
+            }
+        }
+        if (!achou) System.out.println("Nenhuma consulta encontrada.");
+    }
+
+    private static void relatorioPorPeriodo() {
+        System.out.print("Data inicio (DD/MM/AAAA): ");
+        String ini = lerString();
+        System.out.print("Data fim (DD/MM/AAAA): ");
+        String fim = lerString();
+        System.out.println("\n=== CONSULTAS DE " + ini + " A " + fim + " ===");
+        for (Consulta c : consultas) {
+            if (c.getData().compareTo(ini) >= 0 && c.getData().compareTo(fim) <= 0) {
+                System.out.println(c.exibirResumo());
+            }
+        }
+    }
+
+    private static void resumoFinanceiro() {
+        System.out.println("\n=== RESUMO FINANCEIRO ===");
+        double totalPagamentos = 0;
+        for (Pagamento p : pagamentos) {
+            totalPagamentos += p.calcularValorFinal();
+        }
+        System.out.println("Total pagamentos: R$" + String.format("%.2f", totalPagamentos));
+    }
