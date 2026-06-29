@@ -377,3 +377,221 @@ public class Main {
         }
         if (!achou) System.out.println("Nenhum profissional encontrado.");
     }
+
+    // ========== MENU CONSULTAS ==========
+    
+    private static void menuConsultas() {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n--- CONSULTAS ---");
+            System.out.println("1 - Agendar por profissional");
+            System.out.println("2 - Agendar por especialidade");
+            System.out.println("3 - Cancelar");
+            System.out.println("4 - Remarcar");
+            System.out.println("5 - Listar todas");
+            System.out.println("6 - Buscar por CPF");
+            System.out.println("0 - Voltar");
+            System.out.print("Opcao: ");
+            op = lerInteiro();
+            switch (op) {
+                case 1: agendarConsulta(); break;
+                case 2: agendarPorEspecialidade(); break;
+                case 3: cancelarConsulta(); break;
+                case 4: remarcarConsulta(); break;
+                case 5: listarConsultas(); break;
+                case 6: buscarConsultasPorPaciente(); break;
+                case 0: break;
+                default: System.out.println("Opcao invalida!"); break;
+            }
+        }
+    }
+
+    private static void agendarConsulta() {
+        try {
+            System.out.print("CPF do paciente: ");
+            String cpf = lerString();
+            Paciente p = mapaPacientes.get(cpf);
+            if (p == null) {
+                System.out.println("Paciente nao encontrado!");
+                return;
+            }
+            if (!p.isAtivo()) {
+                System.out.println("Paciente inativo!");
+                return;
+            }
+            
+            System.out.print("Nome do profissional: ");
+            String nome = lerString();
+            Profissional prof = mapaProfissionais.get(nome);
+            if (prof == null) {
+                System.out.println("Profissional nao encontrado!");
+                return;
+            }
+            
+            System.out.print("Data (DD/MM/AAAA): ");
+            String data = lerString();
+            System.out.print("Horario (HH:MM): ");
+            String horario = lerString();
+            System.out.print("Tipo (inicial/retorno/avaliacao): ");
+            String tipo = lerString();
+            
+            // Verifica conflito
+            String dia = descobrirDiaSemana(data);
+            for (Consulta c : consultas) {
+                if (c.getNomeProfissional().equals(nome) && 
+                    c.getData().equals(data) && 
+                    c.getHorario().equals(horario) && 
+                    c.getStatus().equals("agendada")) {
+                    System.out.println("Horario ocupado!");
+                    return;
+                }
+            }
+            
+            Consulta consulta = new Consulta(cpf, nome, data, horario, tipo);
+            consultas.add(consulta);
+            System.out.println("Consulta agendada!");
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void agendarPorEspecialidade() {
+        try {
+            System.out.print("CPF do paciente: ");
+            String cpf = lerString();
+            Paciente p = mapaPacientes.get(cpf);
+            if (p == null || !p.isAtivo()) {
+                System.out.println("Paciente invalido ou inativo!");
+                return;
+            }
+            
+            System.out.print("Especialidade: ");
+            String esp = lerString().toLowerCase();
+            System.out.print("Data (DD/MM/AAAA): ");
+            String data = lerString();
+            System.out.print("Horario (HH:MM): ");
+            String horario = lerString();
+            
+            String dia = descobrirDiaSemana(data);
+            for (Profissional prof : profissionais) {
+                if (prof.getEspecialidade().equalsIgnoreCase(esp) && prof.atendeNoDia(dia)) {
+                    boolean conflito = false;
+                    for (Consulta c : consultas) {
+                        if (c.getNomeProfissional().equals(prof.getNome()) && 
+                            c.getData().equals(data) && 
+                            c.getHorario().equals(horario) && 
+                            c.getStatus().equals("agendada")) {
+                            conflito = true;
+                            break;
+                        }
+                    }
+                    if (!conflito) {
+                        Consulta consulta = new Consulta(cpf, prof.getNome(), data, horario);
+                        consultas.add(consulta);
+                        System.out.println("Consulta agendada com " + prof.getNome());
+                        return;
+                    }
+                }
+            }
+            System.out.println("Nenhum profissional disponivel!");
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void cancelarConsulta() {
+        try {
+            System.out.print("CPF: ");
+            String cpf = lerString();
+            System.out.print("Data (DD/MM/AAAA): ");
+            String data = lerString();
+            System.out.print("Horario (HH:MM): ");
+            String horario = lerString();
+            
+            for (Consulta c : consultas) {
+                if (c.getCpfPaciente().equals(cpf) && 
+                    c.getData().equals(data) && 
+                    c.getHorario().equals(horario)) {
+                    
+                    if (c.getStatus().equals("realizada")) {
+                        System.out.println("Consulta ja realizada!");
+                        return;
+                    }
+                    if (c.getStatus().equals("cancelada")) {
+                        System.out.println("Consulta ja cancelada!");
+                        return;
+                    }
+                    
+                    System.out.print("Motivo: ");
+                    String motivo = lerString();
+                    c.cancelar(motivo);
+                    System.out.println("Consulta cancelada!");
+                    return;
+                }
+            }
+            System.out.println("Consulta nao encontrada!");
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void remarcarConsulta() {
+        try {
+            System.out.print("CPF: ");
+            String cpf = lerString();
+            System.out.print("Data original: ");
+            String dataOrig = lerString();
+            System.out.print("Horario original: ");
+            String horarioOrig = lerString();
+            
+            for (Consulta c : consultas) {
+                if (c.getCpfPaciente().equals(cpf) && 
+                    c.getData().equals(dataOrig) && 
+                    c.getHorario().equals(horarioOrig) && 
+                    c.getStatus().equals("agendada")) {
+                    
+                    System.out.print("Nova data: ");
+                    String novaData = lerString();
+                    System.out.print("Novo horario: ");
+                    String novoHorario = lerString();
+                    
+                    c.remarcar(novaData, novoHorario);
+                    Consulta nova = new Consulta(cpf, c.getNomeProfissional(), novaData, novoHorario, c.getTipo());
+                    consultas.add(nova);
+                    System.out.println("Consulta remarcada!");
+                    return;
+                }
+            }
+            System.out.println("Consulta nao encontrada!");
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void listarConsultas() {
+        if (consultas.isEmpty()) {
+            System.out.println("Nenhuma consulta.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE CONSULTAS ===");
+        for (Consulta c : consultas) {
+            System.out.println(c.exibirResumo());
+        }
+    }
+
+    private static void buscarConsultasPorPaciente() {
+        System.out.print("CPF: ");
+        String cpf = lerString();
+        boolean achou = false;
+        for (Consulta c : consultas) {
+            if (c.getCpfPaciente().equals(cpf)) {
+                System.out.println(c.exibirResumo());
+                achou = true;
+            }
+        }
+        if (!achou) System.out.println("Nenhuma consulta encontrada.");
+    }
