@@ -70,11 +70,6 @@ O sistema foi desenvolvido seguindo os princípios da **Programação Orientada 
 # Navegue até a pasta do projeto
 cd ProjetoPOO-Etapa02
 
-# Compile todos os arquivos de uma vez
-javac -d . src/*.java
-
-# Ou compile separadamente (se houver erros)
-javac -d . src/Main.java
-
+#java Main
 
 
