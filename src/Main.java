@@ -49,3 +49,36 @@ public class Main {
         }
         sc.close();
     }
+
+    // ========== METODOS AUXILIARES ==========
+    private static int lerInteiro() {
+        while (true) {
+            try {
+                return Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.err.print("Digite um numero valido: ");
+            }
+        }
+    }
+    
+    private static double lerDouble() {
+        while (true) {
+            try {
+                return Double.parseDouble(sc.nextLine().trim().replace(",", "."));
+            } catch (NumberFormatException e) {
+                System.err.print("Digite um numero valido: ");
+            }
+        }
+    }
+    
+    private static String lerString() {
+        return sc.nextLine().trim();
+    }
+    
+    private static String lerStringNaoVazia() {
+        while (true) {
+            String s = lerString();
+            if (!s.isEmpty()) return s;
+            System.out.print("Campo obrigatorio: ");
+        }
+    }
