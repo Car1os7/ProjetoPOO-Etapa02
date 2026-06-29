@@ -1,58 +1,63 @@
-public class Pagamento {
-    public int indiceConsulta;
-    public double valorFinal;
-    public String tipoPagamento;
-    public int parcelas;
+package model;
 
-    public Pagamento(int indiceConsulta, double valorFinal, String tipoPagamento) {
+import exception.PagamentoInvalidoException;
+
+public abstract class Pagamento {
+    
+    protected int indiceConsulta;
+    protected double valorBase;
+    protected String tipoPagamento;
+    protected boolean processado;
+    
+    public Pagamento(int indiceConsulta, double valorBase, String tipoPagamento) {
         this.indiceConsulta = indiceConsulta;
-        this.valorFinal = valorFinal;
-        this.tipoPagamento = tipoPagamento;
-        this.parcelas = 1;
+        setValorBase(valorBase);
+        setTipoPagamento(tipoPagamento);
+        this.processado = false;
     }
-
-    // com parcelas (so pra cartao)
-    public Pagamento(int indiceConsulta, double valorFinal, String tipoPagamento, int parcelas) {
-        this.indiceConsulta = indiceConsulta;
-        this.valorFinal = valorFinal;
-        this.tipoPagamento = tipoPagamento;
-        this.parcelas = parcelas;
-    }
-
-    // sem desconto nenhum
-    public static double calcularValor(double valorBase) {
-        return valorBase;
-    }
-
-    // com desconto em percentual
-    public static double calcularValor(double valorBase, double percentualDesconto) {
-        double desconto = valorBase * percentualDesconto / 100;
-        double valor = valorBase - desconto;
-        if (valor < 0) {
-            valor = 0;
+    
+    public int getIndiceConsulta() { return indiceConsulta; }
+    public double getValorBase() { return valorBase; }
+    public String getTipoPagamento() { return tipoPagamento; }
+    public boolean isProcessado() { return processado; }
+    
+    public void setValorBase(double valorBase) {
+        if (valorBase < 0) {
+            throw new PagamentoInvalidoException("Valor base não pode ser negativo!");
         }
-        return valor;
+        this.valorBase = valorBase;
     }
-
-    // com desconto e multa somada
-    public static double calcularValor(double valorBase, double percentualDesconto, double multa) {
-        double desconto = valorBase * percentualDesconto / 100;
-        double valor = valorBase - desconto + multa;
-        if (valor < 0) {
-            valor = 0;
+    
+    public void setTipoPagamento(String tipoPagamento) {
+        String tipo = tipoPagamento.toLowerCase();
+        if (!tipo.equals("dinheiro") && !tipo.equals("pix") && 
+            !tipo.equals("cartao") && !tipo.equals("convenio")) {
+            throw new PagamentoInvalidoException("Tipo de pagamento inválido! Opções: dinheiro, pix, cartao, convenio");
         }
-        return valor;
+        this.tipoPagamento = tipo;
     }
-
+    
+    public abstract double calcularValorFinal();
+    
+    public void processar() {
+        if (processado) {
+            System.out.println("Pagamento já foi processado.");
+            return;
+        }
+        double valorFinal = calcularValorFinal();
+        this.processado = true;
+        System.out.println("Pagamento processado! Valor final: R$" + String.format("%.2f", valorFinal));
+    }
+    
     public String exibirResumo() {
-        // arredonda pra 2 casas
-        double valorArredondado = Math.round(valorFinal * 100.0) / 100.0;
-        String resumo = "Consulta #" + indiceConsulta + " | Valor: R$" + valorArredondado
-                + " | Tipo: " + tipoPagamento + " | Parcelas: " + parcelas;
-        if (parcelas > 1) {
-            double valorParcela = Math.round((valorFinal / parcelas) * 100.0) / 100.0;
-            resumo = resumo + " (R$" + valorParcela + " cada)";
-        }
-        return resumo;
+        return "Consulta: " + indiceConsulta + 
+               " | Tipo: " + tipoPagamento + 
+               " | Valor Base: R$" + String.format("%.2f", valorBase) +
+               " | Processado: " + (processado ? "Sim" : "Não");
+    }
+    
+    @Override
+    public String toString() {
+        return exibirResumo();
     }
 }
