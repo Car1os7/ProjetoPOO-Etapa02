@@ -891,3 +891,22 @@ public class Main {
         }
         System.out.println("Exportacao finalizada!");
     }
+// ========== METODO AUXILIAR ==========
+    
+    private static String descobrirDiaSemana(String data) {
+        try {
+            int dia = Integer.parseInt(data.substring(0, 2));
+            int mes = Integer.parseInt(data.substring(3, 5));
+            int ano = Integer.parseInt(data.substring(6, 10));
+            if (mes < 3) { mes += 12; ano--; }
+            int k = ano % 100;
+            int j = ano / 100;
+            int resultado = (dia + (13 * (mes + 1)) / 5 + k + k/4 + j/4 - 2*j) % 7;
+            if (resultado < 0) resultado += 7;
+            String[] nomes = {"sabado", "domingo", "segunda", "terca", "quarta", "quinta", "sexta"};
+            return nomes[resultado];
+        } catch (Exception e) {
+            return "segunda";
+        }
+    }
+}
