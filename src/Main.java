@@ -595,3 +595,73 @@ public class Main {
         }
         if (!achou) System.out.println("Nenhuma consulta encontrada.");
     }
+
+    // ========== MENU ATENDIMENTOS ==========
+    
+    private static void menuAtendimentos() {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n--- ATENDIMENTOS ---");
+            System.out.println("1 - Registrar atendimento");
+            System.out.println("2 - Listar atendimentos");
+            System.out.println("0 - Voltar");
+            System.out.print("Opcao: ");
+            op = lerInteiro();
+            switch (op) {
+                case 1: registrarAtendimento(); break;
+                case 2: listarAtendimentos(); break;
+                case 0: break;
+                default: System.out.println("Opcao invalida!"); break;
+            }
+        }
+    }
+
+    private static void registrarAtendimento() {
+        try {
+            System.out.print("Indice da consulta: ");
+            int idx = lerInteiro();
+            if (idx < 0 || idx >= consultas.size()) {
+                System.out.println("Indice invalido!");
+                return;
+            }
+            
+            Consulta c = consultas.get(idx);
+            if (!c.getStatus().equals("agendada")) {
+                System.out.println("Consulta nao esta agendada!");
+                return;
+            }
+            
+            System.out.print("Observacoes: ");
+            String obs = lerString();
+            System.out.print("Diagnostico: ");
+            String diag = lerString();
+            
+            Atendimento a = new Atendimento(idx, obs, diag);
+            System.out.print("Quantos procedimentos? ");
+            int qtd = lerInteiro();
+            for (int i = 0; i < qtd; i++) {
+                System.out.print("Procedimento " + (i+1) + ": ");
+                a.adicionarProcedimento(lerString());
+            }
+            
+            c.realizar();
+            a.concluir();
+            atendimentos.add(a);
+            System.out.println("Atendimento registrado!");
+            System.out.println(a.exibirResumo());
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void listarAtendimentos() {
+        if (atendimentos.isEmpty()) {
+            System.out.println("Nenhum atendimento.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE ATENDIMENTOS ===");
+        for (Atendimento a : atendimentos) {
+            System.out.println(a.exibirResumo());
+        }
+    }
