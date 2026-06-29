@@ -879,3 +879,15 @@ public class Main {
         }
         System.out.println("Total pagamentos: R$" + String.format("%.2f", totalPagamentos));
     }
+
+    // ========== MENU EXPORTACAO ==========
+    
+    private static void menuExportacao() {
+        System.out.println("\n--- EXPORTACAO DE DADOS ---");
+        System.out.println("Exportando dados...");
+        for (Consulta c : consultas) {
+            System.out.println(c.exportarDados());
+            System.out.println("---------------------------");
+        }
+        System.out.println("Exportacao finalizada!");
+    }
