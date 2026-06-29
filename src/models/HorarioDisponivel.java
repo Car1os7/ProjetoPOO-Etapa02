@@ -1,5 +1,14 @@
 package model;
 
+/**
+ * CLASSE HORARIO DISPONIVEL
+ * 
+ * Conceitos aplicados:
+ * - AGREGAÇÃO: HorarioDisponivel existe independentemente do Profissional
+ * - ENCAPSULAMENTO: atributos privados
+ * 
+ * Um mesmo horário pode ser reutilizado por diferentes profissionais
+ */
 public class HorarioDisponivel {
     
     private String diaSemana;
@@ -51,5 +60,29 @@ public class HorarioDisponivel {
     
     public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
+    }
+    
+    // ========== MÉTODOS ==========
+    
+    private String determinarTurno(String horario) {
+        if (horario == null) return "indefinido";
+        int hora = Integer.parseInt(horario.substring(0, 2));
+        if (hora >= 6 && hora < 12) return "manhã";
+        if (hora >= 12 && hora < 18) return "tarde";
+        return "noite";
+    }
+    
+    public void ocupar() {
+        this.disponivel = false;
+    }
+    
+    public void liberar() {
+        this.disponivel = true;
+    }
+    
+    @Override
+    public String toString() {
+        return diaSemana + " " + horario + " (" + turno + ") - " + 
+               (disponivel ? "DISPONÍVEL" : "OCUPADO");
     }
 }
