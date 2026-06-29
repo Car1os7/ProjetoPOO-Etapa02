@@ -665,3 +665,133 @@ public class Main {
             System.out.println(a.exibirResumo());
         }
     }
+
+    // ========== MENU PAGAMENTOS ==========
+    
+    private static void menuPagamentos() {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n--- PAGAMENTOS ---");
+            System.out.println("1 - Pagamento em Dinheiro");
+            System.out.println("2 - Pagamento em Cartao");
+            System.out.println("3 - Pagamento por Convenio");
+            System.out.println("4 - Listar pagamentos");
+            System.out.println("0 - Voltar");
+            System.out.print("Opcao: ");
+            op = lerInteiro();
+            switch (op) {
+                case 1: pagamentoDinheiro(); break;
+                case 2: pagamentoCartao(); break;
+                case 3: pagamentoConvenio(); break;
+                case 4: listarPagamentos(); break;
+                case 0: break;
+                default: System.out.println("Opcao invalida!"); break;
+            }
+        }
+    }
+
+    private static void pagamentoDinheiro() {
+        try {
+            System.out.print("Indice da consulta: ");
+            int idx = lerInteiro();
+            if (idx < 0 || idx >= consultas.size()) {
+                System.out.println("Indice invalido!");
+                return;
+            }
+            
+            String nomeProf = consultas.get(idx).getNomeProfissional();
+            Profissional prof = mapaProfissionais.get(nomeProf);
+            if (prof == null || prof.getValorConsulta() <= 0) {
+                System.out.println("Valor da consulta nao definido!");
+                return;
+            }
+            
+            PagamentoDinheiro pag = new PagamentoDinheiro(idx, prof.getValorConsulta());
+            pagamentos.add(pag);
+            System.out.println("Pagamento em dinheiro registrado!");
+            System.out.println("Valor final: R$" + String.format("%.2f", pag.calcularValorFinal()));
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void pagamentoCartao() {
+        try {
+            System.out.print("Indice da consulta: ");
+            int idx = lerInteiro();
+            if (idx < 0 || idx >= consultas.size()) {
+                System.out.println("Indice invalido!");
+                return;
+            }
+            
+            String nomeProf = consultas.get(idx).getNomeProfissional();
+            Profissional prof = mapaProfissionais.get(nomeProf);
+            if (prof == null || prof.getValorConsulta() <= 0) {
+                System.out.println("Valor da consulta nao definido!");
+                return;
+            }
+            
+            System.out.print("Parcelas (1 a 6): ");
+            int parcelas = lerInteiro();
+            PagamentoCartao pag = new PagamentoCartao(idx, prof.getValorConsulta(), parcelas);
+            pagamentos.add(pag);
+            System.out.println("Pagamento em cartao registrado!");
+            System.out.println("Valor final: R$" + String.format("%.2f", pag.calcularValorFinal()));
+            System.out.println("Valor por parcela: R$" + String.format("%.2f", pag.getValorParcela()));
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void pagamentoConvenio() {
+        try {
+            System.out.print("CPF do paciente: ");
+            String cpf = lerString();
+            Paciente paciente = mapaPacientes.get(cpf);
+            if (paciente == null || paciente.getConvenio() == null) {
+                System.out.println("Paciente sem convenio!");
+                return;
+            }
+            
+            System.out.print("Indice da consulta: ");
+            int idx = lerInteiro();
+            if (idx < 0 || idx >= consultas.size()) {
+                System.out.println("Indice invalido!");
+                return;
+            }
+            
+            String nomeProf = consultas.get(idx).getNomeProfissional();
+            Profissional prof = mapaProfissionais.get(nomeProf);
+            if (prof == null || prof.getValorConsulta() <= 0) {
+                System.out.println("Valor da consulta nao definido!");
+                return;
+            }
+            
+            Convenio convenio = paciente.getConvenio();
+            if (!convenio.cobreEspecialidade(prof.getEspecialidade())) {
+                System.out.println("Convenio nao cobre esta especialidade!");
+                return;
+            }
+            
+            PagamentoConvenio pag = new PagamentoConvenio(idx, prof.getValorConsulta(), convenio, prof.getEspecialidade());
+            pagamentos.add(pag);
+            System.out.println("Pagamento por convenio registrado!");
+            System.out.println("Valor final: R$" + String.format("%.2f", pag.calcularValorFinal()));
+            
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void listarPagamentos() {
+        if (pagamentos.isEmpty()) {
+            System.out.println("Nenhum pagamento.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE PAGAMENTOS ===");
+        for (Pagamento p : pagamentos) {
+            System.out.println(p.exibirResumo());
+        }
+    }
