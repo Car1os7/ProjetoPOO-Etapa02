@@ -51,6 +51,7 @@ public class Main {
     }
 
     // ========== METODOS AUXILIARES ==========
+    
     private static int lerInteiro() {
         while (true) {
             try {
@@ -83,7 +84,7 @@ public class Main {
         }
     }
 
-     // ========== DADOS DE TESTE ==========
+    // ========== DADOS DE TESTE ==========
     
     private static void inicializarDadosTeste() {
         try {
@@ -891,7 +892,8 @@ public class Main {
         }
         System.out.println("Exportacao finalizada!");
     }
-// ========== METODO AUXILIAR ==========
+
+    // ========== METODO AUXILIAR ==========
     
     private static String descobrirDiaSemana(String data) {
         try {
