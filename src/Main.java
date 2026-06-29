@@ -263,3 +263,117 @@ public class Main {
         p.desativar();
         System.out.println("Paciente desativado!");
     }
+
+    // ========== MENU PROFISSIONAIS ==========
+    
+    private static void menuProfissionais() {
+        int op = -1;
+        while (op != 0) {
+            System.out.println("\n--- PROFISSIONAIS ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar todos");
+            System.out.println("3 - Filtrar por especialidade");
+            System.out.println("0 - Voltar");
+            System.out.print("Opcao: ");
+            op = lerInteiro();
+            switch (op) {
+                case 1: cadastrarProfissional(); break;
+                case 2: listarProfissionais(); break;
+                case 3: filtrarProfissionais(); break;
+                case 0: break;
+                default: System.out.println("Opcao invalida!"); break;
+            }
+        }
+    }
+
+    private static void cadastrarProfissional() {
+        try {
+            System.out.println("\n--- CADASTRO DE PROFISSIONAL ---");
+            System.out.print("Nome: ");
+            String nome = lerStringNaoVazia();
+            System.out.print("CPF: ");
+            String cpf = lerStringNaoVazia();
+            
+            System.out.println("Especialidades:");
+            System.out.println("1 - Clinico Geral");
+            System.out.println("2 - Fisioterapeuta");
+            System.out.println("3 - Psicologo");
+            System.out.println("4 - Nutricionista");
+            System.out.print("Escolha: ");
+            int esp = lerInteiro();
+            
+            System.out.print("Registro profissional: ");
+            String registro = lerString();
+            System.out.print("Valor da consulta: ");
+            double valor = lerDouble();
+            
+            Profissional prof = null;
+            switch (esp) {
+                case 1:
+                    System.out.print("Encaminhamento (opcional): ");
+                    String enc = lerString();
+                    prof = new ClinicoGeral(nome, cpf, registro, valor, enc);
+                    break;
+                case 2:
+                    System.out.print("Total de sessoes previstas: ");
+                    int sessoes = lerInteiro();
+                    prof = new Fisioterapeuta(nome, cpf, registro, valor, sessoes);
+                    break;
+                case 3:
+                    System.out.print("Abordagem terapeutica: ");
+                    String abordagem = lerStringNaoVazia();
+                    prof = new Psicologo(nome, cpf, registro, valor, abordagem);
+                    break;
+                case 4:
+                    System.out.print("Plano alimentar: ");
+                    String plano = lerStringNaoVazia();
+                    prof = new Nutricionista(nome, cpf, registro, valor, plano);
+                    break;
+                default: System.out.println("Especialidade invalida!"); return;
+            }
+            
+            System.out.print("Quantos horarios? ");
+            int qtd = lerInteiro();
+            List<HorarioDisponivel> horarios = new ArrayList<>();
+            for (int i = 0; i < qtd; i++) {
+                System.out.print("Dia (segunda, terca, ...): ");
+                String dia = lerString();
+                System.out.print("Horario (HH:MM): ");
+                String hora = lerString();
+                horarios.add(new HorarioDisponivel(dia, hora));
+            }
+            prof.setHorarios(horarios);
+            
+            profissionais.add(prof);
+            mapaProfissionais.put(nome, prof);
+            System.out.println("Profissional cadastrado!");
+            System.out.println(prof.exibirResumo());
+            
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private static void listarProfissionais() {
+        if (profissionais.isEmpty()) {
+            System.out.println("Nenhum profissional cadastrado.");
+            return;
+        }
+        System.out.println("\n=== LISTA DE PROFISSIONAIS ===");
+        for (Profissional p : profissionais) {
+            System.out.println(p.exibirResumo());
+        }
+    }
+
+    private static void filtrarProfissionais() {
+        System.out.print("Especialidade: ");
+        String esp = lerString().toLowerCase();
+        boolean achou = false;
+        for (Profissional p : profissionais) {
+            if (p.getEspecialidade().equalsIgnoreCase(esp)) {
+                System.out.println(p.exibirResumo());
+                achou = true;
+            }
+        }
+        if (!achou) System.out.println("Nenhum profissional encontrado.");
+    }
